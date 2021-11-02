@@ -2,6 +2,7 @@ package com.example.testingapi.controller;
 
 
 import com.example.testingapi.model.User;
+import com.example.testingapi.service.MovieService;
 import com.example.testingapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -19,6 +20,9 @@ public class LoginController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private MovieService movieService;
 
     @GetMapping(value={"/", "/login"})
     public ModelAndView login(){
@@ -63,9 +67,10 @@ public class LoginController {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByUserName(auth.getName());
-        modelAndView.addObject("userName", "Welcome " + user.getUserName() + "/" + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+        modelAndView.addObject("userName", "Welcome " + user.getUserName() + "/" + user.getName() + " " + user.getLastName() + " (" + user.getId() + ")");
         modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role");
         modelAndView.setViewName("admin/home");
+        modelAndView.addObject("movies", movieService.listMoviesByUser(user.getId()));
         return modelAndView;
     }
 

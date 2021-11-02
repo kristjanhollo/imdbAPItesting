@@ -1,37 +1,54 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" lang="">
 
 <head>
-    <title>Spring Security Tutorial</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Login Form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
-<body>
-<form th:action="@{/registration}" method="get">
-    <button class="btn btn-md btn-warning btn-block" type="Submit">Go To Registration Page</button>
-</form>
-
+<body class="bg-dark">
 <div class="container">
-    <img th:src="@{/images/login.jpg}" class="img-responsive center-block" width="300" height="300" alt="Logo"/>
-    <form th:action="@{/login}" method="POST" class="form-signin">
-        <h3 class="form-signin-heading" th:text="Welcome"></h3>
-        <br/>
+    <div class="row">
+        <div class="col-xs-12">
+            <nav class="navbar navbar-light bg-dark">
+                <div class="container">
+                    <a class="navbar-brand" th:action="@{/}">
+                        <h1 style="color: white">RottenPotatoes</h1>
+                    </a>
+                    <form th:action="@{/registration}" method="get">
+                        <button class="btn btn-md btn-dark btn-block" type="Submit">Go To Registration Page</button>
+                    </form>
+                </div>
+            </nav>
 
-        <input type="text" id="user_name" name="user_name" placeholder="User Name"
-               class="form-control"/> <br/>
-        <input type="password" th:placeholder="Password"
-               id="password" name="password" class="form-control"/> <br/>
 
-        <div align="center" th:if="${param.error}">
-            <p style="font-size: 20; color: #FF1C19;">User Name or Password invalid, please verify</p>
+            <div class="login-dark">
+                <form th:action="@{/login}" method="POST" class="form-signin">
+                    <h2 class="sr-only">Login Form</h2>
+                    <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
+                    <div class="form-group"><input type="text" id="user_name" name="user_name" placeholder="User Name"
+                                                   class="form-control"></div>
+                    <div class="form-group"><input class="form-control" id="password" type="password" name="password"
+                                                   th:placeholder="Password"></div>
+                    <div th:if="${param.error}">
+                        <p style="font-size: 20px; color: #FF1C19;">User Name or Password invalid, please verify</p>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" type="Submit" value="Login" th:text="Login">Log In
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit"
-                th:text="Login"></button>
-    </form>
+    </div>
 </div>
 </body>
+
 </html>

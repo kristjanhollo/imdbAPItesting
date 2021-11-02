@@ -1,14 +1,26 @@
 package com.example.testingapi.model;
 
-import java.util.Objects;
 
+
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "movies")
 public class Movie {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String Title;
     private String Year;
     private String Poster;
     private String imdbID;
     private String Type;
+    private String rating;
+    @ManyToOne
+    @JoinColumn(name ="user_id", nullable = false)
+    private User user;
 
 
     public Movie() {
@@ -20,6 +32,30 @@ public class Movie {
         Poster = poster;
         this.imdbID = imdbID;
         Type = type;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {

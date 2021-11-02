@@ -43,6 +43,8 @@ public class User {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     @ToString.Exclude
     private Set<Role> roles;
+    @OneToMany(mappedBy = "user")
+    private Set<Movie> movies;
 
     public User(Integer id, String userName, String email, String password, String name, String lastName, Boolean active, Set<Role> roles) {
         this.id = id;

@@ -2,7 +2,7 @@ package com.example.testingapi.controller;
 
 
 import com.example.testingapi.model.Movie;
-import com.example.testingapi.service.MovieService;
+import com.example.testingapi.service.MovieAPIService;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,11 +19,11 @@ public class MovieController {
 
 
     @Autowired
-    private MovieService movieService;
+    private MovieAPIService movieAPIService;
 
     @GetMapping("/movies")
     public String showSearch(Model model) throws UnirestException, UnsupportedEncodingException {
-        List<Movie> movies = movieService.listMovies();
+        List<Movie> movies = movieAPIService.listMovies();
         model.addAttribute("movies", movies);
         return "get-movies";
     }
@@ -32,7 +32,7 @@ public class MovieController {
 
     @GetMapping("/index")
     public String postMovies(Model model) throws UnirestException, UnsupportedEncodingException {
-        List<Movie> movieList = movieService.listMovies();
+        List<Movie> movieList = movieAPIService.listMovies();
         model.addAttribute("movies", movieList);
         return "index";
     }
@@ -40,7 +40,7 @@ public class MovieController {
     @GetMapping("/index/search")
     public String searchMovie(@RequestParam(value = "title") String keyword, Model model) throws UnirestException, UnsupportedEncodingException {
 
-        MovieService movieService = new MovieService();
+        MovieAPIService movieService = new MovieAPIService();
         movieService.setName(keyword);
         List<Movie> foundMovies = movieService.searchMovies(keyword);
         if(foundMovies.isEmpty()) {
