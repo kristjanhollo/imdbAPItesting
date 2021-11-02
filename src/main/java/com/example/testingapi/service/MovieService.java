@@ -10,7 +10,6 @@ import kong.unirest.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -45,8 +44,14 @@ public class MovieService {
     }
 
 
-    public List<Movie> listMovies(String name) throws UnirestException {
-        this.name = name;
+    public List<Movie> listMovies() throws UnirestException, UnsupportedEncodingException {
+        HttpResponse<JsonNode> getJson = apiRequest(HOST,QUERY,API_HOST, API_KEY);
+        JSONArray jsonArray = jsonArrayFromJsonObject(getJson);
+        return fetchMoviesFromJsonArray(jsonArray);
+    }
+
+    public List<Movie> searchMovies(String title) throws UnirestException, UnsupportedEncodingException {
+        String QUERY = String.format("s=%s&r=json&type=movie&page=1", URLEncoder.encode(title, CHARSET));
         HttpResponse<JsonNode> getJson = apiRequest(HOST,QUERY,API_HOST, API_KEY);
         JSONArray jsonArray = jsonArrayFromJsonObject(getJson);
         return fetchMoviesFromJsonArray(jsonArray);
@@ -60,8 +65,11 @@ public class MovieService {
                 .asJson();
     }
 
-    private JSONArray jsonArrayFromJsonObject(HttpResponse<JsonNode> response) {
+    private JSONArray jsonArrayFromJsonObject(HttpResponse<JsonNode> response) throws UnirestException, UnsupportedEncodingException {
         final JSONObject obj = new JSONObject(response.getBody().toString());
+        if(obj.toString().contains("Error")) {
+            return new JSONArray();
+        }
         return obj.getJSONArray("Search");
     }
 
