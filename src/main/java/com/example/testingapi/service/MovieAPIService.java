@@ -14,8 +14,14 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
+@SuppressWarnings("unchecked")
 public class MovieAPIService {
 
 
@@ -35,12 +41,24 @@ public class MovieAPIService {
     private final String API_KEY = "e23d4a42c3mshe1feb667b531871p1162a6jsn67cd66488bfb";
     private final String QUERY = String.format("s=%s&r=json&type=movie&page=1", URLEncoder.encode(this.name, CHARSET));
 
-    public MovieAPIService() throws UnsupportedEncodingException {
+    public MovieAPIService() throws UnsupportedEncodingException{
     }
+
 
 
     private String getMovieName(String name) {
         return name;
+    }
+
+
+
+    public static void main(String[] args) throws UnirestException {
+
+        HttpResponse<JsonNode> response = Unirest.get("https://movie-database-imdb-alternative.p.rapidapi.com/?s=Avengers%20Endgame&r=json&page=1")
+                .header("x-rapidapi-host", "movie-database-imdb-alternative.p.rapidapi.com")
+                .header("x-rapidapi-key", "e23d4a42c3mshe1feb667b531871p1162a6jsn67cd66488bfb")
+                        .asJson();
+        System.out.println(response.getBody().toString());
     }
 
 
@@ -65,13 +83,15 @@ public class MovieAPIService {
                 .asJson();
     }
 
-    private JSONArray jsonArrayFromJsonObject(HttpResponse<JsonNode> response) throws UnirestException, UnsupportedEncodingException {
+    private JSONArray jsonArrayFromJsonObject(HttpResponse<JsonNode> response){
         final JSONObject obj = new JSONObject(response.getBody().toString());
         if(obj.toString().contains("Error")) {
             return new JSONArray();
         }
         return obj.getJSONArray("Search");
     }
+
+
 
 
     private List<Movie> fetchMoviesFromJsonArray(JSONArray jsonArray) {
@@ -86,10 +106,15 @@ public class MovieAPIService {
             movieToList.setYear(movie.getString("Year"));
             movieToList.setImdbID(movie.getString("imdbID"));
             movieToList.setPoster(movie.getString("Poster"));
+
             movieList.add(movieToList);
         }
+        return movieList.stream().filter(distinctByKey(Movie::getImdbID)).collect(Collectors.toList());
+    }
 
-        return movieList;
+    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Set<Object> seen = ConcurrentHashMap.newKeySet();
+        return t -> seen.add(keyExtractor.apply(t));
     }
 
 }

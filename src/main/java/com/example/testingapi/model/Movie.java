@@ -3,11 +3,14 @@ package com.example.testingapi.model;
 
 
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "movies")
-public class Movie {
+public class Movie implements Comparable<Movie> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -99,6 +102,19 @@ public class Movie {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Movie movie = (Movie) o;
+        return id != null && Objects.equals(id, movie.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+
+    @Override
     public String toString() {
         return "Movie{" +
                 "Title='" + Title + '\'' +
@@ -107,5 +123,10 @@ public class Movie {
                 ", imdbID='" + imdbID + '\'' +
                 ", Type='" + Type + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Movie o) {
+        return this.getImdbID().compareTo(o.imdbID);
     }
 }
