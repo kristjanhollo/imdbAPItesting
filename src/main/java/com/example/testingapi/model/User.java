@@ -46,6 +46,18 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Movie> movies;
 
+    public void setMovies(Set<Movie> movies) {
+        this.movies = movies;
+    }
+
+    public void updateMoviesList(Movie movie) {
+        this.movies.add(movie);
+    }
+
+    public Set<Movie> getMovies() {
+        return movies;
+    }
+
     public User(Integer id, String userName, String email, String password, String name, String lastName, Boolean active, Set<Role> roles) {
         this.id = id;
         this.userName = userName;

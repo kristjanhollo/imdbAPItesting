@@ -28,7 +28,7 @@
 
 
             <div class="login-dark">
-                <form th:action="@{/login}" method="POST" class="form-signin">
+                <form autocomplete="off" th:action="@{/login}" method="POST" class="form-signin">
                     <h2 class="sr-only">Login Form</h2>
                     <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
                     <div class="form-group"><input type="text" id="user_name" name="user_name" placeholder="User Name"
@@ -36,7 +36,7 @@
                     <div class="form-group"><input class="form-control" id="password" type="password" name="password"
                                                    th:placeholder="Password"></div>
                     <div th:if="${param.error}">
-                        <p style="font-size: 20px; color: #FF1C19;">User Name or Password invalid, please verify</p>
+                        <p style="font-size: 20px; color: gold;">User Name or Password invalid, please verify</p>
                     </div>
                     <div class="form-group">
                         <button class="btn btn-primary btn-block" type="Submit" value="Login" th:text="Login">Log In

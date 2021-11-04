@@ -1,14 +1,23 @@
 package com.example.testingapi.model;
 
+import javax.persistence.*;
+
+
+@Entity
+@Table(name = "user_movies")
 public class UserMovie {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String poster;
     private String title;
     private String type;
     private String year;
-    private String imdbid;
-    private String user_id;
+    private String imdbID;
+
+
+    private String userID;
     private String rating;
 
     public Long getId() {
@@ -51,20 +60,20 @@ public class UserMovie {
         this.year = year;
     }
 
-    public String getImdbid() {
-        return imdbid;
+    public String getImdbID() {
+        return imdbID;
     }
 
-    public void setImdbid(String imdbid) {
-        this.imdbid = imdbid;
+    public void setImdbID(String imdbid) {
+        this.imdbID = imdbid;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getUserID() {
+        return userID;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserID(String user_id) {
+        this.userID = user_id;
     }
 
     public String getRating() {

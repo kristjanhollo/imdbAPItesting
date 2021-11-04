@@ -30,32 +30,47 @@
                 <button type="submit">Go</button>
             </form>
         </div>
+        <div>
+
+        </div>
         <div class="row">
             <div class="col-xs-12 col-lg-6">
                 <div class="container">
                     <div class="row" style="padding-bottom: 15px">
-                    <th:block th:each="movie : ${movies}">
-                        <div class="col-xs-4 col-lg-6">
-                        <h5 th:text="${movie.title}">Name</h5>
-                        <h6 th:text="${movie.year}">Year</h6>
-                        <p th:text="${movie.imdbID}">Rating</p>
-                        <img th:src="${movie.poster}" alt="img" style="width: 25%; margin-bottom: 15px" class="zoom">
-                        </div>
-                    </th:block>
+                        <th:block th:each="movie : ${movies}">
+                            <div class="col-xs-4 col-lg-6">
+                                <h5 th:text="${movie.title}" th:field="title">Name</h5>
+                                <h6 th:text="${movie.year}" th:field="*{year}">Year</h6>
+                                <p th:text="${movie.imdbID}" th:field="*{imdbId}">Rating</p>
+                                <img th:src="${movie.poster}" alt="img" style="width: 25%; margin-bottom: 15px"
+                                     class="zoom">
+                                <form th:action="@{/index}" th:object="${movie}" method="post">
+                                    <p hidden>Movie Title: <input type="text" th:value="${movie.title}" name="title">
+                                    <p hidden>Movie imdbid: <input type="text" th:value="${movie.imdbID}" name="imdbID">
+                                    <p hidden>Movie type: <input type="text" th:value="${movie.type}" name="type">
+                                    <p hidden>Movie poster: <input type="text" th:value="${movie.poster}" name="poster">
+                                    <p hidden>Movie year: <input type="text" th:value="${movie.year}" name="year">
+                                    </p>
+                                    <p><input type="submit" value="Submit!"></p>
+                                </form>
+                            </div>
+
+                        </th:block>
                     </div>
                 </div>
             </div>
 
             <div class="col-xs-12 col-lg-6">
                 <div class="container">
-                    <h3> INDEX </h3>
+                    <h3 style="margin-bottom: 15px; color: gold">Welcome <span th:utext="${user}"></span>! </h3>
                     <div class="row" style="padding-bottom: 15px">
                         <th:block th:each="movie : ${userMovies}">
                             <div class="col-xs-4 col-lg-6">
                                 <h5 th:text="${movie.title}">Name</h5>
                                 <h6 th:text="${movie.year}">Year</h6>
                                 <p th:text="${movie.imdbID}">Rating</p>
-                                <img th:src="${movie.poster}" alt="img" style="width: 25%; margin-bottom: 15px" class="zoom">
+                                <img th:src="${movie.poster}" alt="img" style="width: 25%; margin-bottom: 15px"
+                                     class="zoom">
                             </div>
                         </th:block>
                     </div>
@@ -65,6 +80,5 @@
 
     </div>
 </div>
-
 </body>
 </html>
